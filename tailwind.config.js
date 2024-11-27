@@ -6,7 +6,7 @@ export default {
       fontFamily: {
         sans: ["Roboto", "sans-serif"],
       },
-         gdridTemplateColumns: {
+      gridTemplateColumns: {
         "70/30": "70% 28%",
       },
     },

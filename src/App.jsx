@@ -1,21 +1,61 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
 import MainLayout from "./layouts/MainLayout.jsx";
 import AddJobPage from "./pages/AddJobPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
+
 import JobsPage from "./pages/JobsPage.jsx";
+
+import JobPage, { jobLoader } from "./pages/JobPage";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 function App() {
+  const addJob = async (newJob) => {
+    const newJobUpload = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newJob),
+    });
+  };
+  const deleteJob = async (id) => {
+    const newJobUpload = await fetch(`/api/${id}`, {
+      method: "DELETE",
+    });
+  };
+
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="/jobs" element={<JobsPage />} />
+        <Route
+          path="/jobs/:id"
+          element={<JobPage deleteJob={deleteJob} />}
+          loader={jobLoader}
+        />
+        <Route path="/add-job" element={<AddJobPage addNewJob={addJob} />} />
+        <Route path="*" element={<NotFoundPage />} />
+        <Route path="/jobs/*" element={<NotFoundPage />} />
+      </Route>
+    )
+  );
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<MainLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="/jobs" element={<JobsPage />} />
-          <Route path="/add-job" element={<AddJobPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    // <BrowserRouter>
+    //   <Routes>
+    //     <Route element={<MainLayout />}>
+    //       <Route index element={<HomePage />} />
+    //       <Route path="/jobs" element={<JobsPage />} />
+    //       <Route path="/add-job" element={<AddJobPage />} />
+    //       <Route path="*" element={<NotFoundPage />} />
+    //     </Route>
+    //   </Routes>
+    // </BrowserRouter>
+    <RouterProvider router={router} />
   );
 }
 
