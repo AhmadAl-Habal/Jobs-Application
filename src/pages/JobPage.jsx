@@ -109,7 +109,9 @@ const Jobpage = ({ deleteJob }) => {
 };
 
 const jobLoader = async ({ params }) => {
-  const res = await fetch(`/api/${params.id}`);
+  const res = await fetch(
+    `/https://6742c465b7464b1c2a62a611.mockapi.io/Jobs/${params.id}`
+  );
   const data = await res.json();
   return data;
 };

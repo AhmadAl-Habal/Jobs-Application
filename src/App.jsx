@@ -14,18 +14,24 @@ import JobPage, { jobLoader } from "./pages/JobPage";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 function App() {
   const addJob = async (newJob) => {
-    const newJobUpload = await fetch("/api", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newJob),
-    });
+    const newJobUpload = await fetch(
+      "/https://6742c465b7464b1c2a62a611.mockapi.io/Jobs",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newJob),
+      }
+    );
   };
   const deleteJob = async (id) => {
-    const newJobUpload = await fetch(`/api/${id}`, {
-      method: "DELETE",
-    });
+    const newJobUpload = await fetch(
+      `/https://6742c465b7464b1c2a62a611.mockapi.io/Jobs/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
   };
 
   const router = createBrowserRouter(
