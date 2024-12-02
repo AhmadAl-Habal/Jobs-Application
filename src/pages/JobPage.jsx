@@ -2,12 +2,36 @@ import React from "react";
 import { FaArrowLeft, FaMapMarker } from "react-icons/fa";
 import { Link, useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useState, useEffect } from "react";
 import Spinner from "../components/Spinner";
 // import { us } from "react";
-const Jobpage = ({ deleteJob }) => {
+
+const JobPage = ({ deleteJob }) => {
+  const [job, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
-  const job = useLoaderData();
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const res = await fetch(
+          `https://6742c465b7464b1c2a62a611.mockapi.io/Jobs/${id}`
+        );
+        const data = await res.json();
+        setJobs(data);
+        console.log(data);
+      } catch (error) {
+        console.log("Error fetching data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchJobs();
+  }, []);
+
+  // const job = useLoaderData();
   const navigate = useNavigate();
+  console.log(id);
+
   const confirmDeleteJob = (jobID) => {
     const confirmState = window.confirm(
       "Are you sure you want to delete this Job?"
@@ -16,10 +40,14 @@ const Jobpage = ({ deleteJob }) => {
     deleteJob(jobID);
     console.log(jobID, "Deleted");
     toast.success("Job Deleted Successfully");
-    navigate("/jobs");
+
+    setTimeout(() => {
+      window.location.reload();
+      navigate("/jobs");
+    }, 1000);
   };
 
-  return false ? (
+  return loading ? (
     <Spinner />
   ) : (
     <>
@@ -65,7 +93,6 @@ const Jobpage = ({ deleteJob }) => {
             <aside>
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h3 className="text-xl font-bold mb-6">Company Info</h3>
-
                 <h2 className="text-2xl">{job.company.name}</h2>
 
                 <p className="my-2">{job.company.description}</p>
@@ -108,11 +135,11 @@ const Jobpage = ({ deleteJob }) => {
   );
 };
 
-const jobLoader = async ({ params }) => {
+const jobLoader = async () => {
   const res = await fetch(
-    `/https://6742c465b7464b1c2a62a611.mockapi.io/Jobs/${params.id}`
+    `/https://6742c465b7464b1c2a62a611.mockapi.io/Jobs/${id}`
   );
   const data = await res.json();
   return data;
 };
-export { Jobpage as default, jobLoader };
+export { JobPage as default, jobLoader };

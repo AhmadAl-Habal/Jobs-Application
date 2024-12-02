@@ -15,7 +15,7 @@ import NotFoundPage from "./pages/NotFoundPage.jsx";
 function App() {
   const addJob = async (newJob) => {
     const newJobUpload = await fetch(
-      "/https://6742c465b7464b1c2a62a611.mockapi.io/Jobs",
+      "https://6742c465b7464b1c2a62a611.mockapi.io/Jobs",
       {
         method: "POST",
         headers: {
@@ -27,7 +27,7 @@ function App() {
   };
   const deleteJob = async (id) => {
     const newJobUpload = await fetch(
-      `/https://6742c465b7464b1c2a62a611.mockapi.io/Jobs/${id}`,
+      `https://6742c465b7464b1c2a62a611.mockapi.io/Jobs/${id}`,
       {
         method: "DELETE",
       }
@@ -39,11 +39,7 @@ function App() {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/jobs" element={<JobsPage />} />
-        <Route
-          path="/jobs/:id"
-          element={<JobPage deleteJob={deleteJob} />}
-          loader={jobLoader}
-        />
+        <Route path="/jobs/:id" element={<JobPage deleteJob={deleteJob} />} />
         <Route path="/add-job" element={<AddJobPage addNewJob={addJob} />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/jobs/*" element={<NotFoundPage />} />

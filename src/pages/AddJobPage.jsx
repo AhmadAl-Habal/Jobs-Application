@@ -32,7 +32,10 @@ const AddJobPage = ({ addNewJob }) => {
     };
     addNewJob(newJob);
     toast.success("Job Added Succcessfully");
-    return navigate("/jobs");
+    navigate("/jobs/");
+    return setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   return (
