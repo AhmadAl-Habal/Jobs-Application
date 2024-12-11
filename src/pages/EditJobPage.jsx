@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-
-const AddJobPage = ({ addNewJob }) => {
+import Spinner from "../components/Spinner";
+const EditJobPage = ({ EditJob }) => {
+  const [job, setJob] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
   const [type, setType] = useState("Full Time");
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
@@ -12,8 +15,34 @@ const AddJobPage = ({ addNewJob }) => {
   const [companyDescription, setCompanyDescription] = useState("");
   const [companyEmail, setCompanyEmail] = useState("");
   const [companyPhone, setCompanyPhone] = useState("");
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const res = await fetch(
+          `https://6742c465b7464b1c2a62a611.mockapi.io/Jobs/${id}`
+        );
+        const data = await res.json();
+        setJob(data);
+        console.log(data);
+        setType(data.type);
+        setTitle(data.title);
+        setDescription(data.description);
+        setSalary(data.salary);
+        setLocation(data.location);
+        setCompanyName(data.company.name);
+        setCompanyDescription(data.company.description);
+        setCompanyEmail(data.company.contactEmail);
+        setCompanyPhone(data.company.contactPhone);
+      } catch (error) {
+        console.log("Error fetching data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchJobs();
+  }, []);
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -30,21 +59,25 @@ const AddJobPage = ({ addNewJob }) => {
         contactPhone: companyPhone,
       },
     };
-    addNewJob(newJob);
+    EditJob(newJob, id);
+
     toast.success("Job Added Succcessfully");
 
     return setTimeout(() => {
-      navigate("/jobs/");
-      // window.location.reload();
-    }, 1000);
+      navigate(`/jobs/${id}`);
+    }, 2000);
   };
 
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <section className="bg-red-50">
       <div className="container m-auto max-w-2xl py-24">
         <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
           <form onSubmit={submitForm}>
-            <h2 className="text-3xl text-center font-semibold mb-6">Add Job</h2>
+            <h2 className="text-3xl text-center font-semibold mb-6">
+              Edit Job
+            </h2>
 
             <div className="mb-4">
               <label
@@ -225,7 +258,7 @@ const AddJobPage = ({ addNewJob }) => {
                 className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                 type="submit"
               >
-                Add Job
+                Edit Job
               </button>
             </div>
           </form>
@@ -235,4 +268,4 @@ const AddJobPage = ({ addNewJob }) => {
   );
 };
 
-export default AddJobPage;
+export default EditJobPage;

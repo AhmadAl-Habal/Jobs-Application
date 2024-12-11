@@ -9,7 +9,7 @@ import AddJobPage from "./pages/AddJobPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
 
 import JobsPage from "./pages/JobsPage.jsx";
-
+import EditJobPage from "./pages/EditJobPage.jsx";
 import JobPage, { jobLoader } from "./pages/JobPage";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 function App() {
@@ -18,6 +18,18 @@ function App() {
       "https://6742c465b7464b1c2a62a611.mockapi.io/Jobs",
       {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newJob),
+      }
+    );
+  };
+  const EditJob = async (newJob, id) => {
+    const editOldJob = await fetch(
+      `https://6742c465b7464b1c2a62a611.mockapi.io/Jobs/${id}`,
+      {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -41,6 +53,10 @@ function App() {
         <Route path="/jobs" element={<JobsPage />} />
         <Route path="/jobs/:id" element={<JobPage deleteJob={deleteJob} />} />
         <Route path="/add-job" element={<AddJobPage addNewJob={addJob} />} />
+        <Route
+          path="/jobs/edit/:id"
+          element={<EditJobPage EditJob={EditJob} />}
+        />
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/jobs/*" element={<NotFoundPage />} />
       </Route>

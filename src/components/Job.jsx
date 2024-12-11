@@ -18,12 +18,12 @@ const Job = ({ job }) => {
 
         <div className="mb-5">{description}</div>
         <button
-          className="text-indigo-500 mb-5 hover:text-indigo-600"
+          className="text-red-500 mb-5 hover:text-red-600"
           onClick={() => setShowAllDesc((prevState) => !prevState)}
         >
           {showAllDesc ? "Less" : "More"}
         </button>
-        <h3 className="text-indigo-500 mb-2">{job.salary}</h3>
+        <h3 className="text-red-500 mb-2">{job.salary}</h3>
 
         <div className="border border-gray-100 mb-5"></div>
 
@@ -34,7 +34,7 @@ const Job = ({ job }) => {
           </div>
           <Link
             to={`/jobs/${job.id}`}
-            className="h-[36px] bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg text-center text-sm"
+            className="h-[36px] bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-center text-sm"
           >
             Read More
           </Link>
