@@ -61,7 +61,7 @@ const EditJobPage = ({ EditJob }) => {
     };
     EditJob(newJob, id);
 
-    toast.success("Job Added Succcessfully");
+    toast.success("Job Edited Succcessfully");
 
     return setTimeout(() => {
       navigate(`/jobs/${id}`);
